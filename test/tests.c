@@ -3,13 +3,15 @@
 //
 #include "tests.h"
 #include "tuple_test.h"
+#include "color_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
+        COLOR_TESTS
 };
 
 static const MunitSuite suite = {
-        "/my-tests", /* name */
+        "/my-tests/", /* name */
         tests, /* tests */
         NULL, /* suites */
         1, /* iterations */

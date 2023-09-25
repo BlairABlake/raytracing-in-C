@@ -30,6 +30,10 @@ tuple_t tuple_sub(tuple_t t1, tuple_t t2) {
     return (tuple_t){t1.x - t2.x, t1.y - t2.y, t1.z - t2.z, t1.w - t2.w};
 }
 
+tuple_t tuple_mul(tuple_t t1, tuple_t t2) {
+    return (tuple_t){t1.x * t2.x, t1.y * t2.y, t1.z * t2.z, t1.w * t2.w};
+}
+
 tuple_t tuple_neg(tuple_t t) {
     return (tuple_t){-t.x, -t.y, -t.z, -t.w};
 }
@@ -59,5 +63,6 @@ tuple_t tuple_cross(tuple_t t1, tuple_t t2) {
                   t1.z * t2.x - t1.x * t2.z,
                   t1.x * t2.y - t1.y * t2.x);
 }
+
 
 #endif //RAYTRACING_IN_C_TUPLE_H

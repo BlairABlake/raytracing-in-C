@@ -97,6 +97,13 @@ TEST(test_tuple_cross_product) {
     munit_assert(tuple_cmp(tuple_cross(a2, a1), t2));
 }
 
+TEST(test_tuple_multiplication) {
+    tuple_t a1 = vector(1, 0.2, 0.4);
+    tuple_t a2 = vector(0.9, 1, 0.1);
+    tuple_t t = vector(0.9, 0.2, 0.04);
+    munit_assert(tuple_cmp(tuple_mul(a1, a2), t));
+}
+
 #define TUPLE_TESTS \
     {               \
         "tuple_instantiation", \
@@ -146,6 +153,14 @@ TEST(test_tuple_cross_product) {
         MUNIT_TEST_OPTION_NONE,  \
         NULL\
     },              \
+    {               \
+        "tuple_multiplication",      \
+        test_tuple_multiplication,   \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL\
+    },                \
     {               \
         "tuple_negation",      \
         test_tuple_negation,   \
