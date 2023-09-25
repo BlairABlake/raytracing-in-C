@@ -176,6 +176,19 @@ TEST(test_matrix_inversion) {
     matrix_free(&mul);
 }
 
+TEST(test_matrix_rotation) {
+    tuple_t t = vector(1.0f, 1.0f, 1.0f);
+    tuple_t tx = vector(1.0f, -1.0f, 1.0f);
+    tuple_t ty = vector(1.0f, 1.0f, -1.0f);
+    tuple_t tz = vector(-1.0f, 1.0f, 1.0f);
+
+    float rad = M_PI / 2;
+
+    munit_assert(tuple_cmp(matrix_rotation_x(&t, rad), tx));
+    munit_assert(tuple_cmp(matrix_rotation_y(&t, rad), ty));
+    munit_assert(tuple_cmp(matrix_rotation_z(&t, rad), tz));
+}
+
 
 #define MATRIX_TESTS \
     {                \
@@ -253,6 +266,14 @@ TEST(test_matrix_inversion) {
     {                \
         "matrix_inversion", \
         test_matrix_inversion, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+    {                \
+        "matrix_rotation", \
+        test_matrix_rotation, \
         NULL,       \
         NULL,       \
         MUNIT_TEST_OPTION_NONE,  \

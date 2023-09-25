@@ -17,6 +17,7 @@ typedef struct {
 
 #define point(x, y, z) (tuple_t){x, y, z, 1}
 #define vector(x, y, z) (tuple_t){x, y, z, 0}
+#define tuple(x, y, z, w) (tuple_t){x, y, z, w}
 
 int tuple_cmp(tuple_t t1, tuple_t t2) {
     return float_cmp2(t1.x, t2.x) && \

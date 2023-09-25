@@ -88,6 +88,12 @@ matrix_t tuple_to_matrix(tuple_t* t) {
     return matrix(1, 4, data);
 }
 
+tuple_t matrix_to_tuple(matrix_t* m) {
+    if(m->width == 1 && m->height == 4 || m->height == 1 && m->width == 4) return tuple(m->data[0], m->data[1], m->data[2], m->data[3]);
+
+    return tuple(0, 0, 0, -1);
+}
+
 int matrix_is_square(matrix_t* m) {
     return m->width == m->height;
 }
@@ -167,6 +173,60 @@ matrix_t matrix_inv(matrix_t* t) {
         }
     }
     return m;
+}
+
+tuple_t matrix_rotation_x(tuple_t* t, float rad) {
+    matrix_t mt = tuple_to_matrix(t);
+    float r[] = {1, 0, 0, 0,
+               0, cosf(rad), -sinf(rad), 0,
+               0, sinf(rad), cosf(rad), 0,
+               0, 0, 0, 1};
+    matrix_t mr = matrix(4, 4, r);
+
+    matrix_t mresult = matrix_mul(&mr, &mt);
+    tuple_t result = matrix_to_tuple(&mresult);
+
+    matrix_free(&mresult);
+    matrix_free(&mt);
+    matrix_free(&mr);
+
+    return result;
+}
+
+tuple_t matrix_rotation_y(tuple_t* t, float rad) {
+    matrix_t mt = tuple_to_matrix(t);
+    float r[] = {cosf(rad), 0, sinf(rad), 0,
+                 0, 1, 0, 0,
+                 -sinf(rad), 0, cosf(rad), 0,
+                 0, 0, 0, 1};
+    matrix_t mr = matrix(4, 4, r);
+
+    matrix_t mresult = matrix_mul(&mr, &mt);
+    tuple_t result = matrix_to_tuple(&mresult);
+
+    matrix_free(&mresult);
+    matrix_free(&mt);
+    matrix_free(&mr);
+
+    return result;
+}
+
+tuple_t matrix_rotation_z(tuple_t* t, float rad) {
+    matrix_t mt = tuple_to_matrix(t);
+    float r[] = {cosf(rad), -sinf(rad), 0, 0,
+                 sinf(rad), cosf(rad), 0, 0,
+                 0, 0, 1, 0,
+                 0, 0, 0, 1};
+    matrix_t mr = matrix(4, 4, r);
+
+    matrix_t mresult = matrix_mul(&mr, &mt);
+    tuple_t result = matrix_to_tuple(&mresult);
+
+    matrix_free(&mresult);
+    matrix_free(&mt);
+    matrix_free(&mr);
+
+    return result;
 }
 
 #endif //RAYTRACING_IN_C_MATRIX_H
