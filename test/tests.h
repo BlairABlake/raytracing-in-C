@@ -12,6 +12,7 @@
 #include "color.h"
 #include "canvas.h"
 #include "util.h"
+#include "matrix.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

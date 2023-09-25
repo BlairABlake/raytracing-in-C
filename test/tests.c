@@ -5,11 +5,13 @@
 #include "tuple_test.h"
 #include "color_test.h"
 #include "canvas_test.h"
+#include "matrix_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
         COLOR_TESTS,
-        CANVAS_TESTS
+        CANVAS_TESTS,
+        MATRIX_TESTS
 };
 
 static const MunitSuite suite = {
