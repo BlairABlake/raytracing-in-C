@@ -2,8 +2,10 @@
 // Created by ryousuke kaga on 2023/09/25.
 //
 
+#ifndef RAYTRACING_IN_C_TUPLE_TEST_H
+#define RAYTRACING_IN_C_TUPLE_TEST_H
+
 #include "tests.h"
-#include "tuple.h"
 
 TEST(test_tuple_instantiation) {
     tuple_t a = {4.3f, -4.2f, 3.1f, 1};
@@ -72,7 +74,7 @@ TEST(test_tuple_scalar_division) {
 
 TEST(test_tuple_magnitude) {
     tuple_t v = vector(-1, -2, -3);
-    munit_assert(double_cmp(sqrt(14), tuple_mag(v), EPSILON_DEFAULT));
+    munit_assert(float_cmp(sqrt(14), tuple_mag(v), EPSILON_DEFAULT));
 }
 
 TEST(test_tuple_normalization) {
@@ -85,7 +87,7 @@ TEST(test_tuple_normalization) {
 TEST(test_tuple_dot_product) {
     tuple_t a1 = vector(1, 2, 3);
     tuple_t a2 = vector(2, 3, 4);
-    munit_assert(double_cmp2(tuple_dot(a1, a2), 20));
+    munit_assert(float_cmp2(tuple_dot(a1, a2), 20));
 }
 
 TEST(test_tuple_cross_product) {
@@ -217,3 +219,6 @@ TEST(test_tuple_multiplication) {
         MUNIT_TEST_OPTION_NONE,  \
         NULL\
     }
+
+
+#endif //RAYTRACING_IN_C_TUPLE_TEST_H

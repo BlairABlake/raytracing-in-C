@@ -4,10 +4,12 @@
 #include "tests.h"
 #include "tuple_test.h"
 #include "color_test.h"
+#include "canvas_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
-        COLOR_TESTS
+        COLOR_TESTS,
+        CANVAS_TESTS
 };
 
 static const MunitSuite suite = {

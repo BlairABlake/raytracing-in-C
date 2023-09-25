@@ -6,8 +6,12 @@
 #define RAYTRACING_IN_C_TESTS_H
 
 #include <math.h>
-#include "munit.h"
-#include "float.h"
+#include "munit/munit.h"
+#include "cstring/cstring.h"
+#include "tuple.h"
+#include "color.h"
+#include "canvas.h"
+#include "util.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

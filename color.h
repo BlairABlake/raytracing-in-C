@@ -5,6 +5,8 @@
 #ifndef RAYTRACING_IN_C_COLOR_H
 #define RAYTRACING_IN_C_COLOR_H
 
+#include "tuple.h"
+
 typedef struct {
     float red;
     float green;

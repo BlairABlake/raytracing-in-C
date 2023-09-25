@@ -5,6 +5,9 @@
 #ifndef RAYTRACING_IN_C_TUPLE_H
 #define RAYTRACING_IN_C_TUPLE_H
 
+#include "util.h"
+
+
 typedef struct {
     float x;
     float y;
@@ -16,9 +19,9 @@ typedef struct {
 #define vector(x, y, z) (tuple_t){x, y, z, 0}
 
 int tuple_cmp(tuple_t t1, tuple_t t2) {
-    return double_cmp(t1.x, t2.x, EPSILON_DEFAULT) && \
-           double_cmp(t1.y, t2.y, EPSILON_DEFAULT) && \
-           double_cmp(t1.z, t2.z, EPSILON_DEFAULT) && \
+    return float_cmp2(t1.x, t2.x) && \
+           float_cmp2(t1.y, t2.y) && \
+           float_cmp2(t1.z, t2.z) && \
            t1.w == t2.w;
 }
 

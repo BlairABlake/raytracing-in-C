@@ -6,8 +6,6 @@
 #define RAYTRACING_IN_C_COLOR_TEST_H
 
 #include "tests.h"
-#include "color.h"
-#include "tuple.h"
 
 TEST(test_color_instantiation) {
     color_t c = color(-0.5, 0.4, 1.7);
@@ -59,4 +57,6 @@ TEST(test_tuple_to_color) {
         MUNIT_TEST_OPTION_NONE,  \
         NULL\
     }
+
+
 #endif //RAYTRACING_IN_C_COLOR_TEST_H
