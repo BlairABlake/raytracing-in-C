@@ -18,13 +18,11 @@ typedef struct {
 
 // buf should be declared like sphere_t buf[2];
 void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
-    float x_d = r->origin.x - s->center.x;
-    float y_d = r->origin.y - s->center.y;
-    float z_d = r->origin.z - s->center.z;
+    tuple_t d = vector(r->origin.x - s->center.x, r->origin.y - s->center.y, r->origin.z - s->center.z);
 
-    float a = r->direction.x * r->direction.x + r->direction.y * r->direction.y + r->direction.z * r->direction.z;
-    float b = r->direction.x * x_d + r->direction.y * y_d + r->direction.z * x_d;
-    float c = x_d * x_d + y_d * y_d + z_d * z_d - s->radius * s->radius;
+    float a = tuple_dot(r->direction, r->direction);
+    float b = tuple_dot(r->direction, d);
+    float c = tuple_dot(d, d) - s->radius * s->radius;
 
     if (a == 0) {
         buf[0] = ray_position(r, -c / (2 * b));
