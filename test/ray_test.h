@@ -13,8 +13,10 @@ TEST(test_ray_instantiation) {
 
     ray_t r = ray(origin, direction);
 
-    munit_assert(tuple_cmp(origin, r.origin));
-    munit_assert(tuple_cmp(direction, r.direction));
+    munit_assert(tuple_cmp2(origin, r.origin));
+    munit_assert(tuple_cmp2(direction, r.direction));
+
+    return MUNIT_OK;
 }
 
 TEST(test_ray_position) {
@@ -23,7 +25,9 @@ TEST(test_ray_position) {
 
     ray_t r = ray(origin, direction);
 
-    munit_assert(tuple_cmp(ray_position(&r, 2.5), point(4.5, 3, 4)));
+    munit_assert(tuple_cmp2(ray_position(&r, 2.5), point(4.5, 3, 4)));
+
+    return MUNIT_OK;
 }
 
 #define RAY_TESTS \

@@ -20,6 +20,8 @@ TEST(test_matrix_instantiation) {
     }
 
     matrix_free(&m);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_set) {
@@ -29,6 +31,8 @@ TEST(test_matrix_set) {
     munit_assert(float_cmp2(matrix_at(&m, 2, 3), 1.0f));
 
     matrix_free(&m);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_comparison) {
@@ -43,6 +47,8 @@ TEST(test_matrix_comparison) {
     munit_assert(matrix_cmp(&m1, &m2, matrix_cmp_delta));
     matrix_free(&m1);
     matrix_free(&m2);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_multiplication) {
@@ -65,6 +71,8 @@ TEST(test_matrix_multiplication) {
     matrix_free(&m2);
     matrix_free(&mt);
     matrix_free(&r);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_identity) {
@@ -84,6 +92,8 @@ TEST(test_matrix_identity) {
     matrix_free(&m);
     matrix_free(&t);
     matrix_free(&i);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_transpose) {
@@ -99,6 +109,8 @@ TEST(test_matrix_transpose) {
 
     matrix_free(&m1);
     matrix_free(&m2);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_submatrix) {
@@ -114,6 +126,8 @@ TEST(test_matrix_submatrix) {
 
     matrix_free(&m1);
     matrix_free(&m2);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_determinant) {
@@ -130,6 +144,8 @@ TEST(test_matrix_determinant) {
 
     matrix_free(&m1);
     matrix_free(&m2);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_invertible) {
@@ -146,6 +162,8 @@ TEST(test_matrix_invertible) {
 
     matrix_free(&m1);
     matrix_free(&m2);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_inversion) {
@@ -174,6 +192,8 @@ TEST(test_matrix_inversion) {
     matrix_free(&inv);
     matrix_free(&id);
     matrix_free(&mul);
+
+    return MUNIT_OK;
 }
 
 TEST(test_matrix_rotation) {
@@ -184,9 +204,11 @@ TEST(test_matrix_rotation) {
 
     float rad = M_PI / 2;
 
-    munit_assert(tuple_cmp(matrix_rotation_x(&t, rad), tx));
-    munit_assert(tuple_cmp(matrix_rotation_y(&t, rad), ty));
-    munit_assert(tuple_cmp(matrix_rotation_z(&t, rad), tz));
+    munit_assert(tuple_cmp2(matrix_rotation_x(&t, rad), tx));
+    munit_assert(tuple_cmp2(matrix_rotation_y(&t, rad), ty));
+    munit_assert(tuple_cmp2(matrix_rotation_z(&t, rad), tz));
+
+    return MUNIT_OK;
 }
 
 

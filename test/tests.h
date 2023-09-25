@@ -14,6 +14,7 @@
 #include "util.h"
 #include "matrix.h"
 #include "ray.h"
+#include "sphere.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 

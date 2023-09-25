@@ -12,24 +12,32 @@ TEST(test_color_instantiation) {
     munit_assert(c.red == -0.5f);
     munit_assert(c.green == 0.4f);
     munit_assert(c.blue == 1.7f);
+
+    return MUNIT_OK;
 }
 
 TEST(test_color_comparison) {
     color_t c1 = color(-0.5, 0.4, 1.7);
     color_t c2 = color(-0.5, 0.4, 1.7);
     munit_assert(color_cmp(c1, c2));
+
+    return MUNIT_OK;
 }
 
 TEST(test_color_to_tuple) {
     color_t c = color(0.9, 0.6, 0.75);
     tuple_t t = vector(0.9, 0.6, 0.75);
-    munit_assert(tuple_cmp(color_to_tuple(c), t));
+    munit_assert(tuple_cmp2(color_to_tuple(c), t));
+
+    return MUNIT_OK;
 }
 
 TEST(test_tuple_to_color) {
     color_t c = color(0.9, 0.6, 0.75);
     tuple_t t = vector(0.9, 0.6, 0.75);
     munit_assert(color_cmp(c, tuple_to_color(t)));
+
+    return MUNIT_OK;
 }
 
 #define COLOR_TESTS \
