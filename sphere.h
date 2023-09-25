@@ -24,8 +24,14 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
     float b = tuple_dot(r->direction, d);
     float c = tuple_dot(d, d) - s->radius * s->radius;
 
-    if (a == 0) {
-        buf[0] = ray_position(r, -c / (2 * b));
+    if (a == 0 && b != 0) {
+        float t = -c / (2 * b);
+        if(t <= 0) {
+            *len_buf = 0;
+            return;
+        }
+
+        buf[0] = ray_position(r, t);
         *len_buf = 1;
         return;
     }
@@ -38,6 +44,10 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
         return;
     } else if(discriminant == 0) {
         float t = -b / a;
+        if(t <= 0) {
+            *len_buf = 0;
+            return;
+        }
         buf[0] = ray_position(r, t);
         *len_buf = 1;
         return;
@@ -45,9 +55,17 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
 
     float t1 = (-b + sqrtf(discriminant)) / a;
     float t2 = (-b - sqrtf(discriminant)) / a;
-    buf[0] = ray_position(r, t1);
-    buf[1] = ray_position(r, t2);
-    *len_buf = 2;
+    *len_buf = 0;
+
+    if(t1 > 0) {
+        *len_buf += 1;
+        buf[0] = ray_position(r, t1);
+    }
+
+    if(t2 > 0) {
+        *len_buf += 1;
+        buf[1] = ray_position(r, t2);
+    }
 }
 
 #endif //RAYTRACING_IN_C_SPHERE_H

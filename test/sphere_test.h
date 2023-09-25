@@ -26,9 +26,8 @@ TEST(test_sphere_hit) {
     int hit_n = 0;
     sphere_hit(&s, &r, hits, &hit_n);
 
-    munit_assert(hit_n == 2);
+    munit_assert(hit_n == 1);
     munit_assert(tuple_cmp2(hits[0], point(cosf(M_PI / 4), sinf(M_PI / 4), 0)));
-    munit_assert(tuple_cmp2(hits[1], point(cosf(M_PI / 4 * 5), sinf(M_PI / 4 * 5), 0)));
 
     return MUNIT_OK;
 }
