@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "tuple.h"
 #include "ray.h"
+#include "transform.h"
 
 typedef struct {
     tuple_t center;
@@ -71,7 +72,8 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
 }
 
 tuple_t sphere_normal(tuple_t t, sphere_t s) {
-    return tuple_sub(t, s.center);
+    tuple_t d = tuple_sub(t, s.center);
+    return tuple_mtransform(&d, matrix_inv(&s.transform));
 }
 
 void sphere_set_transform(sphere_t* s, matrix_t* transform) {
