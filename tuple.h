@@ -54,6 +54,7 @@ tuple_t tuple_sc_mul(tuple_t t, float s) {
 }
 
 tuple_t tuple_sc_div(tuple_t t, float s) {
+    if(s == 0.0f) return t;
     return (tuple_t){t.x / s, t.y / s, t.z / s, t.w / s};
 }
 
