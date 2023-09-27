@@ -12,9 +12,11 @@
 typedef struct {
     tuple_t center;
     float radius;
+    matrix_t transform;
 } sphere_t;
 
-#define sphere(center, radius) (sphere_t) { center, radius }
+#define sphere(center, radius, transform) (sphere_t) { center, radius, transform }
+#define sphere_null(center, radius) (sphere_t) { center, radius, matrix_null(4, 4) }
 
 // buf should be declared like sphere_t buf[2];
 void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
@@ -66,6 +68,19 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
         *len_buf += 1;
         buf[1] = ray_position(r, t2);
     }
+}
+
+tuple_t sphere_normal(tuple_t t, sphere_t s) {
+    return tuple_sub(t, s.center);
+}
+
+void sphere_set_transform(sphere_t* s, matrix_t* transform) {
+    matrix_cpy(&s->transform, transform);
+}
+
+void sphere_mset_transform(sphere_t* s, matrix_t transform) {
+    sphere_set_transform(s, &transform);
+    matrix_free(&transform);
 }
 
 #endif //RAYTRACING_IN_C_SPHERE_H

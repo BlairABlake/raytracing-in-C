@@ -8,6 +8,7 @@
 #include "matrix.h"
 #include "sphere.h"
 #include "ray.h"
+#include "transform.h"
 
 int main() {
     int width = 200;
@@ -16,15 +17,16 @@ int main() {
     canvas_t cv = canvas(width, height);
     canvas_init(&cv);
 
-    sphere_t s = sphere(point(0, 0, 0), width / 4.0f);
+    sphere_t s = sphere_null(point(0, 0, 0), width / 4.0f);
+    sphere_mset_transform(&s, scale_matrix(point(1.5f, 1, 1)));
     tuple_t origin = point(0, 0, -200.0f);
-
     color_t red = color(255, 0, 0);
 
     for(int y = -height / 2; y < height / 2; y++) {
         for(int x = -width / 2; x < width / 2; x++) {
             tuple_t p = point(x, y, 0);
             ray_t r = ray(origin, tuple_sub(p, origin));
+            r = ray_mtransform(&r, matrix_inv(&s.transform));
 
             tuple_t hits[2];
             int hit_n = 0;

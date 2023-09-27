@@ -9,7 +9,7 @@
 
 TEST(test_tuple_translation) {
     tuple_t t = point(1.0f, 1.0f, 1.0f);
-    munit_assert(tuple_cmp2(point(2.0f, 2.0f, 2.0f), tuple_transform(&t, translation_matrix(vector(1.0f, 1.0f, 1.0f)))));
+    munit_assert(tuple_cmp2(point(2.0f, 2.0f, 2.0f), tuple_mtransform(&t, translation_matrix(vector(1.0f, 1.0f, 1.0f)))));
 
     return MUNIT_OK;
 }
@@ -22,9 +22,9 @@ TEST(test_tuple_rotation) {
 
         float rad = M_PI / 2;
 
-        munit_assert(tuple_cmp2(tuple_transform(&t, rotation_x_matrix(rad)), tx));
-        munit_assert(tuple_cmp2(tuple_transform(&t, rotation_y_matrix(rad)), ty));
-        munit_assert(tuple_cmp2(tuple_transform(&t, rotation_z_matrix(rad)), tz));
+        munit_assert(tuple_cmp2(tuple_mtransform(&t, rotation_x_matrix(rad)), tx));
+        munit_assert(tuple_cmp2(tuple_mtransform(&t, rotation_y_matrix(rad)), ty));
+        munit_assert(tuple_cmp2(tuple_mtransform(&t, rotation_z_matrix(rad)), tz));
 
         return MUNIT_OK;
 }

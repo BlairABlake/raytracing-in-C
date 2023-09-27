@@ -52,14 +52,38 @@ matrix_t matrix_transform(matrix_t* target, matrix_t* transform) {
     return matrix_mul(transform, target);
 }
 
-tuple_t tuple_transform(tuple_t* target, matrix_t transform) {
+matrix_t matrix_mtransform(matrix_t* target, matrix_t transform) {
+    matrix_t result = matrix_transform(target, &transform);
+    matrix_free(&transform);
+    return result;
+}
+
+tuple_t tuple_transform(tuple_t* target, matrix_t* transform) {
     matrix_t t = tuple_to_matrix(target);
-    matrix_t mresult = matrix_transform(&t, &transform);
+    matrix_t mresult = matrix_transform(&t, transform);
     tuple_t result = matrix_to_tuple(&mresult);
     matrix_free(&t);
     matrix_free(&mresult);
-    matrix_free(&transform);
 
+    return result;
+}
+
+tuple_t tuple_mtransform(tuple_t* target, matrix_t transform) {
+    tuple_t result = tuple_transform(target, &transform);
+    matrix_free(&transform);
+    return result;
+}
+
+ray_t ray_transform(ray_t* target, matrix_t* transform) {
+    ray_t result;
+    result.origin = tuple_transform(&target->origin, transform);
+    result.direction = tuple_transform(&target->direction, transform);
+    return result;
+}
+
+ray_t ray_mtransform(ray_t* target, matrix_t transform) {
+    ray_t result = ray_transform(target, &transform);
+    matrix_free(&transform);
     return result;
 }
 
