@@ -134,6 +134,12 @@ TEST(test_tuple_multiplication) {
     return MUNIT_OK;
 }
 
+TEST(test_tuple_reflection) {
+    tuple_t v = vector(0, -1, 0);
+    tuple_t n = vector(sqrtf(2)/2, sqrtf(2)/2, 0);
+    munit_assert(tuple_cmp2(vector(1, 0, 0), tuple_reflect(v, n)));
+}
+
 #define TUPLE_TESTS \
     {               \
         "tuple_instantiation", \
@@ -246,7 +252,14 @@ TEST(test_tuple_multiplication) {
         NULL,       \
         MUNIT_TEST_OPTION_NONE,  \
         NULL\
+    },              \
+    {               \
+        "tuple_reflection",      \
+        test_tuple_reflection,   \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL\
     }
-
 
 #endif //RAYTRACING_IN_C_TUPLE_TEST_H

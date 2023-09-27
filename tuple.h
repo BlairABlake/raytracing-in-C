@@ -82,5 +82,9 @@ void tuple_cpy(tuple_t* destination, tuple_t* source) {
     destination->w = source->w;
 }
 
+tuple_t tuple_reflect(tuple_t t, tuple_t n) {
+    return tuple_sub(t, tuple_sc_mul(tuple_sc_mul(n, 2.0f), tuple_dot(t, n)));
+}
+
 
 #endif //RAYTRACING_IN_C_TUPLE_H
