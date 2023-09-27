@@ -9,15 +9,17 @@
 #include "tuple.h"
 #include "ray.h"
 #include "transform.h"
+#include "material.h"
 
 typedef struct {
     tuple_t center;
     float radius;
     matrix_t transform;
+    material_t material;
 } sphere_t;
 
-#define sphere(center, radius, transform) (sphere_t) { center, radius, transform }
-#define sphere_null(center, radius) (sphere_t) { center, radius, matrix_null(4, 4) }
+#define sphere(center, radius, transform, material) (sphere_t) { center, radius, transform, material }
+#define sphere_null(center, radius, material) (sphere_t) { center, radius, matrix_null(4, 4), material }
 
 // buf should be declared like sphere_t buf[2];
 void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {

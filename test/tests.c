@@ -10,6 +10,7 @@
 #include "sphere_test.h"
 #include "transform_test.h"
 #include "light_test.h"
+#include "material_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
@@ -19,7 +20,8 @@ MunitTest tests[] = {
         RAY_TESTS,
         SPHERE_TESTS,
         TRANSFORM_TESTS,
-        LIGHT_TESTS
+        LIGHT_TESTS,
+        MATERIAL_TESTS
 };
 
 static const MunitSuite suite = {

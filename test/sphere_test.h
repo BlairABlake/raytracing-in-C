@@ -10,7 +10,9 @@
 TEST(test_sphere_instantiation) {
     tuple_t center = point(0, 0, 0);
     float radius = 1.0f;
-    sphere_t s = sphere_null(center, radius);
+    color_t c = color(1, 1, 1);
+    material_t m = material(c, 0.0f, 0.0f, 0.0f, 0.0f);
+    sphere_t s = sphere_null(center, radius, m);
 
     munit_assert(tuple_cmp2(s.center, center));
     munit_assert(float_cmp2(s.radius, radius));
@@ -19,7 +21,9 @@ TEST(test_sphere_instantiation) {
 }
 
 TEST(test_sphere_hit) {
-    sphere_t s = sphere_null(point(0, 0, 0), 1.0f);
+    color_t c = color(1, 1, 1);
+    material_t m = material(c, 0.0f, 0.0f, 0.0f, 0.0f);
+    sphere_t s = sphere_null(point(0, 0, 0), 1.0f, m);
     ray_t r = ray(point(0, 0, 0), vector(1, 1, 0));
 
     tuple_t hits[2];
