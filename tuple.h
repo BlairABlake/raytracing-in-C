@@ -75,5 +75,12 @@ tuple_t tuple_cross(tuple_t t1, tuple_t t2) {
                   t1.x * t2.y - t1.y * t2.x);
 }
 
+void tuple_cpy(tuple_t* destination, tuple_t* source) {
+    destination->x = source->x;
+    destination->y = source->y;
+    destination->z = source->z;
+    destination->w = source->w;
+}
+
 
 #endif //RAYTRACING_IN_C_TUPLE_H

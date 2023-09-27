@@ -21,4 +21,9 @@ tuple_t ray_position(ray_t* r, float t) {
     return result;
 }
 
+void ray_cpy(ray_t* destination, ray_t* source) {
+    tuple_cpy(&destination->origin, &source->origin);
+    tuple_cpy(&destination->direction, &source->direction);
+}
+
 #endif //RAYTRACING_IN_C_RAY_H

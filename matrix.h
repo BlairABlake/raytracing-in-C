@@ -229,4 +229,23 @@ tuple_t matrix_rotation_z(tuple_t* t, float rad) {
     return result;
 }
 
+void matrix_cpy(matrix_t* destination, matrix_t* source) {
+    if(destination->data == NULL) {
+        matrix_init(destination);
+    }
+
+    size_t size = destination->width * destination->height;
+
+    if(size != source->width * source->height) {
+        return;
+    }
+
+    for(int i=0; i < size; i++) {
+        destination->data[i] = source->data[i];
+    }
+
+    destination->width = source->width;
+    destination->height = source->height;
+}
+
 #endif //RAYTRACING_IN_C_MATRIX_H

@@ -27,4 +27,10 @@ color_t tuple_to_color(tuple_t t) {
     return color(t.x, t.y, t.z);
 }
 
+void color_cpy(color_t* destination, color_t* source) {
+    destination->red = source->red;
+    destination->green = source->green;
+    destination->blue = source->blue;
+}
+
 #endif //RAYTRACING_IN_C_COLOR_H
