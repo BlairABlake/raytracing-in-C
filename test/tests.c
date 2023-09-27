@@ -9,6 +9,7 @@
 #include "ray_test.h"
 #include "sphere_test.h"
 #include "transform_test.h"
+#include "light_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
@@ -17,7 +18,8 @@ MunitTest tests[] = {
         MATRIX_TESTS,
         RAY_TESTS,
         SPHERE_TESTS,
-        TRANSFORM_TESTS
+        TRANSFORM_TESTS,
+        LIGHT_TESTS
 };
 
 static const MunitSuite suite = {

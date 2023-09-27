@@ -16,6 +16,7 @@
 #include "ray.h"
 #include "sphere.h"
 #include "transform.h"
+#include "light.h"
 
 #define TEST(name) MunitResult name(const MunitParameter params[], void* user_data_or_fixture)
 
