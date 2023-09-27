@@ -11,16 +11,17 @@
 #include "transform.h"
 
 int main() {
-    int width = 200;
-    int height = 200;
+    int width = 300;
+    int height = 300;
     int n_rad = 20;
     canvas_t cv = canvas(width, height);
     canvas_init(&cv);
 
-    sphere_t s = sphere_null(point(0, 0, 0), width / 4.0f);
-    sphere_mset_transform(&s, scale_matrix(point(1.5f, 1, 1)));
-    tuple_t origin = point(0, 0, -200.0f);
-    color_t red = color(255, 0, 0);
+    material_t m = material(color(0, 1, 1), 0.7, 0.7, 1, 100.0);
+    sphere_t s = sphere(point(0, 0, 0), 80, matrix_id(4), m);
+    tuple_t origin = point(0, 0, -100.0f);
+
+    point_light_t l = point_light(point(-20, 20, -100.0f), color(2, 2, 2));
 
     for(int y = -height / 2; y < height / 2; y++) {
         for(int x = -width / 2; x < width / 2; x++) {
@@ -33,7 +34,10 @@ int main() {
             sphere_hit(&s, &r, hits, &hit_n);
 
             if(hit_n != 0) {
-                canvas_write(&cv, x + width / 2, height - (y + height / 2), red);
+                tuple_t normal = sphere_normal(s, hits[1]);
+
+                color_t c = lighting(s.material, l, hits[1], tuple_norm(r.direction), normal);
+                canvas_write(&cv, x + width / 2, height - (y + height / 2),  c);
             }
         }
     }
