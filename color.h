@@ -13,10 +13,18 @@ typedef struct {
     float blue;
 } color_t;
 
-#define color(red, green, blue) (color_t){red, green, blue};
+#define color(red, green, blue) (color_t){red, green, blue}
 
-int color_cmp(color_t c1, color_t c2) {
-    return c1.red == c2.red && c1.green == c2.green && c1.blue == c2.blue;
+int color_cmp(color_t c1, color_t c2, float delta) {
+    return float_cmp(c1.red, c2.red, delta) && float_cmp(c1.green, c2.green, delta) && float_cmp(c1.blue, c2.blue, delta);
+}
+
+int color_cmp2(color_t c1, color_t c2) {
+    return color_cmp(c1, c2, EPSILON_DEFAULT);
+}
+
+color_t color_mul(color_t c1, color_t c2) {
+    return color(c1.red * c2.red, c1.green * c2.green, c1.blue * c2.blue);
 }
 
 tuple_t color_to_tuple(color_t c) {

@@ -19,7 +19,12 @@ typedef struct {
 } sphere_t;
 
 #define sphere(center, radius, transform, material) (sphere_t) { center, radius, transform, material }
-#define sphere_null(center, radius, material) (sphere_t) { center, radius, matrix_null(4, 4), material }
+
+sphere_t sphere_null(tuple_t center, float radius, material_t material) {
+    matrix_t m = matrix_null(4, 4);
+    matrix_init(&m);
+    return (sphere_t) { center, radius, m, material };
+}
 
 // buf should be declared like sphere_t buf[2];
 void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
@@ -73,7 +78,7 @@ void sphere_hit(sphere_t* s, ray_t* r, tuple_t* buf, int* len_buf) {
     }
 }
 
-tuple_t sphere_normal(tuple_t t, sphere_t s) {
+tuple_t sphere_normal(sphere_t s, tuple_t t) {
     tuple_t d = tuple_sub(t, s.center);
     return tuple_mtransform(&d, matrix_inv(&s.transform));
 }

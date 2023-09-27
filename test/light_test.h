@@ -13,7 +13,7 @@ TEST(test_point_light_instantiation) {
     point_light_t l = point_light(position, intensity);
 
     munit_assert(tuple_cmp2(position, l.position));
-    munit_assert(color_cmp(intensity, l.intensity));
+    munit_assert(color_cmp2(intensity, l.intensity));
 }
 
 #define LIGHT_TESTS \

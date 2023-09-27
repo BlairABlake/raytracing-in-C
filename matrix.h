@@ -167,6 +167,7 @@ matrix_t matrix_inv(matrix_t* t) {
     matrix_t m = matrix_null(t->width, t->height);
     matrix_init(&m);
     float det = matrix_det(t);
+    if(det == 0) return *t;
     for(int y=0; y < t->height; y++) {
         for(int x=0; x < t->width; x++) {
             matrix_set(&m, x, y, matrix_cofactor(t, y, x) / det);

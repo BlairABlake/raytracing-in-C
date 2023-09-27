@@ -16,7 +16,7 @@ TEST(test_canvas_instantiation) {
     munit_assert(c.width == 10);
     munit_assert(c.height == 20);
     for(int i=0; i < c.width*c.height; i++) {
-        munit_assert(color_cmp(c_i, c.pixels[i]));
+        munit_assert(color_cmp2(c_i, c.pixels[i]));
     }
 
     canvas_free(&c);
@@ -27,7 +27,7 @@ TEST(test_canvas_write) {
     canvas_init(&c);
     color_t red = color(1, 0, 0);
     canvas_write(&c, 2, 3, red);
-    munit_assert(color_cmp(canvas_at(&c, 2, 3), red));
+    munit_assert(color_cmp2(canvas_at(&c, 2, 3), red));
 }
 
 TEST(test_canvas_write_ppm) {

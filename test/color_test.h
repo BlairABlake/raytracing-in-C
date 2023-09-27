@@ -19,7 +19,7 @@ TEST(test_color_instantiation) {
 TEST(test_color_comparison) {
     color_t c1 = color(-0.5, 0.4, 1.7);
     color_t c2 = color(-0.5, 0.4, 1.7);
-    munit_assert(color_cmp(c1, c2));
+    munit_assert(color_cmp2(c1, c2));
 
     return MUNIT_OK;
 }
@@ -35,7 +35,7 @@ TEST(test_color_to_tuple) {
 TEST(test_tuple_to_color) {
     color_t c = color(0.9, 0.6, 0.75);
     tuple_t t = vector(0.9, 0.6, 0.75);
-    munit_assert(color_cmp(c, tuple_to_color(t)));
+    munit_assert(color_cmp2(c, tuple_to_color(t)));
 
     return MUNIT_OK;
 }
