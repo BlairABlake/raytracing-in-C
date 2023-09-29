@@ -26,12 +26,14 @@ TEST(test_sphere_hit) {
     sphere_t s = sphere_null(point(0, 0, 0), 1.0f, m);
     ray_t r = ray(point(0, 0, 0), vector(1, 1, 0));
 
-    tuple_t hits[2];
+    float hits[2];
     int hit_n = 0;
     sphere_hit(&s, &r, hits, &hit_n);
 
+    tuple_t hit_p = ray_position(&r, hits[0]);
+
     munit_assert(hit_n == 1);
-    munit_assert(tuple_cmp2(hits[0], point(cosf(M_PI / 4), sinf(M_PI / 4), 0)));
+    munit_assert(tuple_cmp2(hit_p, point(cosf(M_PI / 4), sinf(M_PI / 4), 0)));
 
     return MUNIT_OK;
 }
