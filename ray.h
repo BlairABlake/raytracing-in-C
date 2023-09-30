@@ -14,7 +14,7 @@ typedef struct {
 
 #define ray(origin, direction) (ray_t){origin, direction}
 
-tuple_t ray_position(ray_t* r, float t) {
+tuple_t ray_position(ray_t* r, double t) {
     tuple_t result = tuple_add(r->origin, tuple_sc_mul(r->direction, t));
     result.w = 1;
 

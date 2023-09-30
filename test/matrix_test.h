@@ -11,12 +11,12 @@ TEST(test_matrix_instantiation) {
     matrix_t m = matrix_null(10, 20);
     matrix_init(&m);
 
-    float f = 0.f;
+    double f = 0.f;
 
     munit_assert(m.width == 10);
     munit_assert(m.height == 20);
     for(int i=0; i < m.width*m.height; i++) {
-        munit_assert(float_cmp2(f, m.data[i]));
+        munit_assert(double_cmp2(f, m.data[i]));
     }
 
     matrix_free(&m);
@@ -28,7 +28,7 @@ TEST(test_matrix_set) {
     matrix_t m = matrix_null(10, 20);
     matrix_init(&m);
     matrix_set(&m, 2, 3, 1.0f);
-    munit_assert(float_cmp2(matrix_at(&m, 2, 3), 1.0f));
+    munit_assert(double_cmp2(matrix_at(&m, 2, 3), 1.0f));
 
     matrix_free(&m);
 
@@ -52,11 +52,11 @@ TEST(test_matrix_comparison) {
 }
 
 TEST(test_matrix_multiplication) {
-    float data1[] = {1.0f, 2.0f,
+    double data1[] = {1.0f, 2.0f,
                      3.0f, 4.0f};
-    float data2[] = {2.0f, 3.0f,
+    double data2[] = {2.0f, 3.0f,
                      4.0f, 5.0f};
-    float datat[] = {10.0f, 13.0f,
+    double datat[] = {10.0f, 13.0f,
                      22.0f, 29.0f};
     matrix_t m1 = matrix(2, 2, data1);
     matrix_t m2 = matrix(2, 2, data2);
@@ -76,9 +76,9 @@ TEST(test_matrix_multiplication) {
 }
 
 TEST(test_matrix_identity) {
-    float data1[] = {1.0f, 2.0f,
+    double data1[] = {1.0f, 2.0f,
                      3.0f, 4.0f};
-    float data2[] = {1.0f, 0.0f,
+    double data2[] = {1.0f, 0.0f,
                      0.0f, 1.0f};
 
     matrix_t m = matrix(2, 2, data1);
@@ -97,9 +97,9 @@ TEST(test_matrix_identity) {
 }
 
 TEST(test_matrix_transpose) {
-    float data1[] = {1.0f, 2.0f, 3.0f,
+    double data1[] = {1.0f, 2.0f, 3.0f,
                      4.0f, 5.0f, 6.0f};
-    float data2[] = {1.0f, 4.0f,
+    double data2[] = {1.0f, 4.0f,
                      2.0f, 5.0f,
                      3.0f, 6.0f};
     matrix_t m1 = matrix(3, 2, data1);
@@ -114,10 +114,10 @@ TEST(test_matrix_transpose) {
 }
 
 TEST(test_matrix_submatrix) {
-    float data1[] = {1.0f, 2.0f, 3.0f,
+    double data1[] = {1.0f, 2.0f, 3.0f,
                      4.0f, 5.0f, 6.0f,
                      7.0f, 8.0f, 9.0f};
-    float data2[] = {5.0f, 6.0f,
+    double data2[] = {5.0f, 6.0f,
                      8.0f, 9.0f};
     matrix_t m1 = matrix(3, 3, data1);
     matrix_t m2 = matrix(2, 2, data2);
@@ -131,16 +131,16 @@ TEST(test_matrix_submatrix) {
 }
 
 TEST(test_matrix_determinant) {
-    float data1[] = {1.0f, 2.0f, 3.0f,
+    double data1[] = {1.0f, 2.0f, 3.0f,
                      4.0f, 5.0f, 6.0f,
                      7.0f, 8.0f, 9.0f};
-    float data2[] = {5.0f, 6.0f,
+    double data2[] = {5.0f, 6.0f,
                      8.0f, 9.0f};
     matrix_t m1 = matrix(3, 3, data1);
     matrix_t m2 = matrix(2, 2, data2);
 
-    munit_assert(float_cmp2(matrix_det(&m1), 0.0f));
-    munit_assert(float_cmp2(matrix_det(&m2), -3.0f));
+    munit_assert(double_cmp2(matrix_det(&m1), 0.0f));
+    munit_assert(double_cmp2(matrix_det(&m2), -3.0f));
 
     matrix_free(&m1);
     matrix_free(&m2);
@@ -149,10 +149,10 @@ TEST(test_matrix_determinant) {
 }
 
 TEST(test_matrix_invertible) {
-    float data1[] = {1.0f, 2.0f, 3.0f,
+    double data1[] = {1.0f, 2.0f, 3.0f,
                      4.0f, 5.0f, 6.0f,
                      7.0f, 8.0f, 9.0f};
-    float data2[] = {5.0f, 6.0f,
+    double data2[] = {5.0f, 6.0f,
                      8.0f, 9.0f};
     matrix_t m1 = matrix(3, 3, data1);
     matrix_t m2 = matrix(2, 2, data2);
@@ -167,11 +167,11 @@ TEST(test_matrix_invertible) {
 }
 
 TEST(test_matrix_inversion) {
-    float data[] = {-5, 2, 6, -8,
+    double data[] = {-5, 2, 6, -8,
                     1, -5, 1, 8,
                     7, 7, -6, -7,
                     1, -3, 7, 4};
-    float datat[] = {0.21805f, 0.45113f, 0.24060f, -0.04511f,
+    double datat[] = {0.21805f, 0.45113f, 0.24060f, -0.04511f,
                      -0.80827f, -1.45677f, -0.44361f, 0.52068f,
                      -0.07895f, -0.22368f, -0.05263f, 0.19737f,
                      -0.52256f, -0.81391f, -0.30075f, 0.30639f};

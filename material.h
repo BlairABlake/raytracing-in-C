@@ -11,10 +11,10 @@
 
 typedef struct {
     color_t color;
-    float ambient;
-    float diffuse;
-    float specular;
-    float shininess;
+    double ambient;
+    double diffuse;
+    double specular;
+    double shininess;
 } material_t;
 
 #define material(color, ambient, diffuse, specular, shininess) (material_t){ color, ambient, diffuse, specular, shininess }
@@ -28,7 +28,7 @@ color_t lighting(material_t m, point_light_t l, tuple_t p, tuple_t e, tuple_t n)
 
     ambient = tuple_sc_mul(effective_color, m.ambient);
 
-    float light_dot_normal = tuple_dot(lightv, n);
+    double light_dot_normal = tuple_dot(lightv, n);
 
     if(light_dot_normal < 0) {
         diffuse = point(0, 0, 0);
@@ -37,12 +37,12 @@ color_t lighting(material_t m, point_light_t l, tuple_t p, tuple_t e, tuple_t n)
         diffuse = tuple_sc_mul(effective_color, m.diffuse * light_dot_normal);
 
         tuple_t reflectv = tuple_reflect(tuple_sc_mul(lightv, -1), n);
-        float reflect_dot_eye = tuple_dot(reflectv, e);
+        double reflect_dot_eye = tuple_dot(reflectv, e);
 
         if(reflect_dot_eye <= 0) {
             specular = point(0, 0, 0);
         } else {
-            float factor = powf(reflect_dot_eye, m.shininess);
+            double factor = powf(reflect_dot_eye, m.shininess);
             specular = tuple_sc_mul(color_to_tuple(l.intensity), m.specular * factor);
         }
     }

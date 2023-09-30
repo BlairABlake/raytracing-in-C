@@ -13,29 +13,29 @@
 
 typedef struct {
     tuple_t center;
-    float radius;
+    double radius;
     matrix_t transform;
     material_t material;
 } sphere_t;
 
 #define sphere(center, radius, transform, material) (sphere_t) { center, radius, transform, material }
 
-sphere_t sphere_null(tuple_t center, float radius, material_t material) {
+sphere_t sphere_null(tuple_t center, double radius, material_t material) {
     matrix_t m = matrix_null(4, 4);
     matrix_init(&m);
     return (sphere_t) { center, radius, m, material };
 }
 
 // buf should be declared like sphere_t buf[2];
-void sphere_hit(sphere_t* s, ray_t* r, float* buf, int* len_buf) {
+void sphere_hit(sphere_t* s, ray_t* r, double* buf, int* len_buf) {
     tuple_t d = vector(r->origin.x - s->center.x, r->origin.y - s->center.y, r->origin.z - s->center.z);
 
-    float a = tuple_dot(r->direction, r->direction);
-    float b = tuple_dot(r->direction, d);
-    float c = tuple_dot(d, d) - s->radius * s->radius;
+    double a = tuple_dot(r->direction, r->direction);
+    double b = tuple_dot(r->direction, d);
+    double c = tuple_dot(d, d) - s->radius * s->radius;
 
     if (a == 0 && b != 0) {
-        float t = -c / (2 * b);
+        double t = -c / (2 * b);
         if(t <= 0) {
             *len_buf = 0;
             return;
@@ -46,14 +46,14 @@ void sphere_hit(sphere_t* s, ray_t* r, float* buf, int* len_buf) {
         return;
     }
 
-    float discriminant = b * b - a * c;
+    double discriminant = b * b - a * c;
 
     if(discriminant < 0) {
         buf = NULL;
         *len_buf = 0;
         return;
     } else if(discriminant == 0) {
-        float t = -b / a;
+        double t = -b / a;
         if(t <= 0) {
             *len_buf = 0;
             return;
@@ -63,8 +63,8 @@ void sphere_hit(sphere_t* s, ray_t* r, float* buf, int* len_buf) {
         return;
     }
 
-    float t1 = (-b - sqrtf(discriminant)) / a;
-    float t2 = (-b + sqrtf(discriminant)) / a;
+    double t1 = (-b - sqrtf(discriminant)) / a;
+    double t2 = (-b + sqrtf(discriminant)) / a;
     *len_buf = 0;
 
     if(t1 > 0) {
@@ -78,8 +78,8 @@ void sphere_hit(sphere_t* s, ray_t* r, float* buf, int* len_buf) {
     }
 }
 
-tuple_t sphere_normal(sphere_t s, tuple_t t) {
-    tuple_t d = tuple_sub(t, s.center);
+tuple_t sphere_normal(sphere_t s, tuple_t p) {
+    tuple_t d = tuple_sub(p, s.center);
     return tuple_mtransform(&d, matrix_inv(&s.transform));
 }
 
@@ -94,7 +94,7 @@ void sphere_mset_transform(sphere_t* s, matrix_t transform) {
 
 int sphere_cmp(sphere_t s1, sphere_t s2) {
     return tuple_cmp2(s1.center, s2.center) && \
-        float_cmp2(s1.radius, s2.radius) && \
+        double_cmp2(s1.radius, s2.radius) && \
         matrix_cmp2(s1.transform, s2.transform);
 }
 

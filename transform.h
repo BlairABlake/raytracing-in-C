@@ -9,7 +9,7 @@
 #include "tuple.h"
 
 matrix_t translation_matrix(tuple_t t) {
-    float r[] = {1, 0, 0, t.x,
+    double r[] = {1, 0, 0, t.x,
                 0, 1, 0, t.y,
                 0, 0, 1, t.z,
                 0, 0, 0, 1};
@@ -17,32 +17,32 @@ matrix_t translation_matrix(tuple_t t) {
 }
 
 matrix_t scale_matrix(tuple_t t) {
-    float r[] = {t.x, 0, 0, 0,
+    double r[] = {t.x, 0, 0, 0,
                  0, t.y, 0, 0,
                  0, 0, t.z, 0,
                  0, 0, 0, 1};
     return matrix(4, 4, r);
 }
 
-matrix_t rotation_x_matrix(float rad) {
-    float r[] = {1, 0, 0, 0,
-                 0, cosf(rad), -sinf(rad), 0,
-                 0, sinf(rad), cosf(rad), 0,
+matrix_t rotation_x_matrix(double rad) {
+    double r[] = {1, 0, 0, 0,
+                 0, cos(rad), -sin(rad), 0,
+                 0, sin(rad), cos(rad), 0,
                  0, 0, 0, 1};
     return matrix(4, 4, r);
 }
 
-matrix_t rotation_y_matrix(float rad) {
-    float r[] = {cosf(rad), 0, sinf(rad), 0,
+matrix_t rotation_y_matrix(double rad) {
+    double r[] = {cos(rad), 0, sin(rad), 0,
                  0, 1, 0, 0,
-                 -sinf(rad), 0, cosf(rad), 0,
+                 -sin(rad), 0, cos(rad), 0,
                  0, 0, 0, 1};
     return matrix(4, 4, r);
 }
 
-matrix_t rotation_z_matrix(float rad) {
-    float r[] = {cosf(rad), -sinf(rad), 0, 0,
-                 sinf(rad), cosf(rad), 0, 0,
+matrix_t rotation_z_matrix(double rad) {
+    double r[] = {cos(rad), -sin(rad), 0, 0,
+                 sin(rad), cos(rad), 0, 0,
                  0, 0, 1, 0,
                  0, 0, 0, 1};
     return matrix(4, 4, r);
@@ -70,7 +70,6 @@ tuple_t tuple_transform(tuple_t* target, matrix_t* transform) {
 
 tuple_t tuple_mtransform(tuple_t* target, matrix_t transform) {
     tuple_t result = tuple_transform(target, &transform);
-    matrix_free(&transform);
     return result;
 }
 

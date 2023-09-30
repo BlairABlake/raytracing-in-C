@@ -8,15 +8,15 @@
 #include "tuple.h"
 
 typedef struct {
-    float red;
-    float green;
-    float blue;
+    double red;
+    double green;
+    double blue;
 } color_t;
 
 #define color(red, green, blue) (color_t){red, green, blue}
 
-int color_cmp(color_t c1, color_t c2, float delta) {
-    return float_cmp(c1.red, c2.red, delta) && float_cmp(c1.green, c2.green, delta) && float_cmp(c1.blue, c2.blue, delta);
+int color_cmp(color_t c1, color_t c2, double delta) {
+    return double_cmp(c1.red, c2.red, delta) && double_cmp(c1.green, c2.green, delta) && double_cmp(c1.blue, c2.blue, delta);
 }
 
 int color_cmp2(color_t c1, color_t c2) {

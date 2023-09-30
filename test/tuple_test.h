@@ -92,14 +92,14 @@ TEST(test_tuple_scalar_division) {
 
 TEST(test_tuple_magnitude) {
     tuple_t v = vector(-1, -2, -3);
-    munit_assert(float_cmp(sqrt(14), tuple_mag(v), EPSILON_DEFAULT));
+    munit_assert(double_cmp(sqrt(14), tuple_mag(v), EPSILON_DEFAULT));
 
     return MUNIT_OK;
 }
 
 TEST(test_tuple_normalization) {
     tuple_t v = vector(1, 2, 3);
-    float mag = tuple_mag(v);
+    double mag = tuple_mag(v);
     tuple_t t = vector(1/mag, 2/mag, 3/mag);
     munit_assert(tuple_cmp2(tuple_norm(v), t));
 
@@ -109,7 +109,7 @@ TEST(test_tuple_normalization) {
 TEST(test_tuple_dot_product) {
     tuple_t a1 = vector(1, 2, 3);
     tuple_t a2 = vector(2, 3, 4);
-    munit_assert(float_cmp2(tuple_dot(a1, a2), 20));
+    munit_assert(double_cmp2(tuple_dot(a1, a2), 20));
 
     return MUNIT_OK;
 }

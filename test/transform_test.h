@@ -20,7 +20,7 @@ TEST(test_tuple_rotation) {
         tuple_t ty = vector(1.0f, 1.0f, -1.0f);
         tuple_t tz = vector(-1.0f, 1.0f, 1.0f);
 
-        float rad = M_PI / 2;
+        double rad = M_PI / 2;
 
         munit_assert(tuple_cmp2(tuple_mtransform(&t, rotation_x_matrix(rad)), tx));
         munit_assert(tuple_cmp2(tuple_mtransform(&t, rotation_y_matrix(rad)), ty));

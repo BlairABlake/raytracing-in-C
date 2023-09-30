@@ -10,15 +10,15 @@
 typedef struct {
     int width;
     int height;
-    float* data;
+    double* data;
 } matrix_t;
 
 #define matrix_null(w, h) (matrix_t){w, h, NULL}
 #define matrix_cmp_delta 0.001
 
-matrix_t matrix(int w, int h, float* data) {
+matrix_t matrix(int w, int h, double* data) {
     size_t size = w * h;
-    float* data_c = malloc(sizeof(float) * size);
+    double* data_c = malloc(sizeof(double) * size);
     for(int i=0; i < size; i++) {
         data_c[i] = data[i];
     }
@@ -27,7 +27,7 @@ matrix_t matrix(int w, int h, float* data) {
 
 void matrix_init(matrix_t* m) {
     size_t size = m->width * m->height;
-    float* data = malloc(sizeof(float) * size);
+    double* data = malloc(sizeof(double) * size);
     for(int i=0; i < size; i++) {
         data[i] = 0.0f;
     }
@@ -40,30 +40,34 @@ void matrix_free(matrix_t* m) {
     m = NULL;
 }
 
-float matrix_at(matrix_t* m, int x, int y) {
+double matrix_at(matrix_t* m, int x, int y) {
     return m->data[x + y*m->width];
 }
 
-void matrix_set(matrix_t* m, int x, int y, float f) {
+void matrix_set(matrix_t* m, int x, int y, double f) {
     if(x >= 0 && x < m->width && y >= 0 && y < m->height) m->data[x + y*m->width] = f;
 }
 
-int matrix_cmp(matrix_t* m1, matrix_t* m2, float delta) {
+int matrix_cmp(matrix_t* m1, matrix_t* m2, double delta) {
     if(m1->width != m2->width || m1->height != m2->height) return 0;
 
     for(int y=0; y < m1->height; y++) {
         for(int x=0; x < m1->width; x++) {
-            if(!float_cmp(matrix_at(m1, x, y), matrix_at(m2, x, y), delta)) return 0;
+            if(!double_cmp(matrix_at(m1, x, y), matrix_at(m2, x, y), delta)) return 0;
         }
     }
 
     return 1;
 }
 
-int matrix_cmp1(matrix_t* m1, matrix_t m2, float delta) {
+int matrix_cmp1(matrix_t* m1, matrix_t m2, double delta) {
     int result = matrix_cmp(m1, &m2, delta);
 
     return result;
+}
+
+int matrix_cmp2(matrix_t m1, matrix_t m2) {
+    return matrix_cmp(&m1, &m2, EPSILON_DEFAULT);
 }
 
 matrix_t matrix_mul(matrix_t* m1, matrix_t* m2) {
@@ -73,7 +77,7 @@ matrix_t matrix_mul(matrix_t* m1, matrix_t* m2) {
     matrix_init(&t);
     for (int y=0; y < m1->height; y++) {
         for(int x=0; x < m2->width; x++) {
-            float v = 0.0f;
+            double v = 0.0f;
             for (int i=0; i < m1->width; i++) {
                 v += matrix_at(m1, i, y) * matrix_at(m2, x, i);
             }
@@ -84,7 +88,7 @@ matrix_t matrix_mul(matrix_t* m1, matrix_t* m2) {
 }
 
 matrix_t tuple_to_matrix(tuple_t* t) {
-    float data[] = {t->x, t->y, t->z, (float)t->w};
+    double data[] = {t->x, t->y, t->z, (double)t->w};
     return matrix(1, 4, data);
 }
 
@@ -131,13 +135,13 @@ matrix_t matrix_submatrix(matrix_t* t, int a, int b) {
     return m;
 }
 
-float matrix_det(matrix_t* t) {
+double matrix_det(matrix_t* t) {
     if(!matrix_is_square(t)) return -1.0f;
     if(t->width == 2 && t->height == 2) {
         return t->data[0] * t->data[3] - t->data[1] * t->data[2];
     }
 
-    float v = 0;
+    double v = 0;
     for(int i=0; i < t->width; i++) {
         matrix_t sub = matrix_submatrix(t, i, 0);
         v += i % 2 ? -1 * t->data[i] * matrix_det(&sub) : t->data[i] * matrix_det(&sub);
@@ -151,22 +155,22 @@ int matrix_is_invertible(matrix_t* t) {
     return (int)matrix_det(t);
 }
 
-float matrix_minor(matrix_t* t, int a, int b) {
+double matrix_minor(matrix_t* t, int a, int b) {
     matrix_t sub = matrix_submatrix(t, a, b);
-    float result = matrix_det(&sub);
+    double result = matrix_det(&sub);
     matrix_free(&sub);
 
     return result;
 }
 
-float matrix_cofactor(matrix_t* t, int a, int b) {
+double matrix_cofactor(matrix_t* t, int a, int b) {
     return (a + b) % 2 ? -matrix_minor(t, a, b) : matrix_minor(t, a, b);
 }
 
 matrix_t matrix_inv(matrix_t* t) {
     matrix_t m = matrix_null(t->width, t->height);
     matrix_init(&m);
-    float det = matrix_det(t);
+    double det = matrix_det(t);
     if(det == 0) return *t;
     for(int y=0; y < t->height; y++) {
         for(int x=0; x < t->width; x++) {
@@ -176,11 +180,11 @@ matrix_t matrix_inv(matrix_t* t) {
     return m;
 }
 
-tuple_t matrix_rotation_x(tuple_t* t, float rad) {
+tuple_t matrix_rotation_x(tuple_t* t, double rad) {
     matrix_t mt = tuple_to_matrix(t);
-    float r[] = {1, 0, 0, 0,
-               0, cosf(rad), -sinf(rad), 0,
-               0, sinf(rad), cosf(rad), 0,
+    double r[] = {1, 0, 0, 0,
+               0, cos(rad), -sin(rad), 0,
+               0, sin(rad), cos(rad), 0,
                0, 0, 0, 1};
     matrix_t mr = matrix(4, 4, r);
 
@@ -194,11 +198,11 @@ tuple_t matrix_rotation_x(tuple_t* t, float rad) {
     return result;
 }
 
-tuple_t matrix_rotation_y(tuple_t* t, float rad) {
+tuple_t matrix_rotation_y(tuple_t* t, double rad) {
     matrix_t mt = tuple_to_matrix(t);
-    float r[] = {cosf(rad), 0, sinf(rad), 0,
+    double r[] = {cos(rad), 0, sin(rad), 0,
                  0, 1, 0, 0,
-                 -sinf(rad), 0, cosf(rad), 0,
+                 -sin(rad), 0, cos(rad), 0,
                  0, 0, 0, 1};
     matrix_t mr = matrix(4, 4, r);
 
@@ -212,10 +216,10 @@ tuple_t matrix_rotation_y(tuple_t* t, float rad) {
     return result;
 }
 
-tuple_t matrix_rotation_z(tuple_t* t, float rad) {
+tuple_t matrix_rotation_z(tuple_t* t, double rad) {
     matrix_t mt = tuple_to_matrix(t);
-    float r[] = {cosf(rad), -sinf(rad), 0, 0,
-                 sinf(rad), cosf(rad), 0, 0,
+    double r[] = {cos(rad), -sin(rad), 0, 0,
+                 sin(rad), cos(rad), 0, 0,
                  0, 0, 1, 0,
                  0, 0, 0, 1};
     matrix_t mr = matrix(4, 4, r);
