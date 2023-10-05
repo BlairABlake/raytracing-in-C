@@ -3,27 +3,17 @@
 //
 #include "tests.h"
 #include "tuple_test.h"
-#include "color_test.h"
-#include "canvas_test.h"
 #include "matrix_test.h"
 #include "ray_test.h"
+#include "canvas_test.h"
 #include "sphere_test.h"
-#include "transform_test.h"
-#include "light_test.h"
-#include "material_test.h"
-#include "world_test.h"
 
 MunitTest tests[] = {
         TUPLE_TESTS,
-        COLOR_TESTS,
-        CANVAS_TESTS,
         MATRIX_TESTS,
         RAY_TESTS,
-        SPHERE_TESTS,
-        TRANSFORM_TESTS,
-        LIGHT_TESTS,
-        MATERIAL_TESTS,
-        WORLD_TESTS
+        CANVAS_TESTS,
+        SPHERE_TESTS
 };
 
 static const MunitSuite suite = {

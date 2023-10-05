@@ -47,7 +47,7 @@ TEST(test_world_intersection) {
     munit_assert(((struct hit_s*)intersections->next->data)->object == &s1);
 
     tuple_t hit_p = ray_position(&r, ((struct hit_s*)intersections->next->data)->t);
-    munit_assert(tuple_cmp2(hit_p, point(0, -1/sqrtf(2), -1/sqrtf(2))));
+    munit_assert(tuple_cmp2(hit_p, point(0, -1/sqrt(2), -1/sqrt(2))));
 
     intersections = intersections->next;
 
@@ -55,7 +55,7 @@ TEST(test_world_intersection) {
     munit_assert(((struct hit_s*)intersections->next->data)->object == &s1);
 
     hit_p = ray_position(&r, ((struct hit_s*)intersections->next->data)->t);
-    munit_assert(tuple_cmp2(hit_p, point(0, 1/sqrtf(2), 1/sqrtf(2))));
+    munit_assert(tuple_cmp2(hit_p, point(0, 1/sqrt(2), 1/sqrt(2))));
 
     return MUNIT_OK;
 }

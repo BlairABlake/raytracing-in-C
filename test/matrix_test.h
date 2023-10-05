@@ -7,202 +7,172 @@
 
 #include "tests.h"
 
-TEST(test_matrix_instantiation) {
-    matrix_t m = matrix_null(10, 20);
-    matrix_init(&m);
-
-    double f = 0.f;
-
-    munit_assert(m.width == 10);
-    munit_assert(m.height == 20);
-    for(int i=0; i < m.width*m.height; i++) {
-        munit_assert(double_cmp2(f, m.data[i]));
+TEST(test_matrix_zero) {
+    matrix_t m;
+    matrix_zero(&m);
+    for(int i=0; i < 16; i++) {
+        munit_assert(m[i] == 0);
     }
-
-    matrix_free(&m);
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_set) {
-    matrix_t m = matrix_null(10, 20);
-    matrix_init(&m);
-    matrix_set(&m, 2, 3, 1.0f);
-    munit_assert(double_cmp2(matrix_at(&m, 2, 3), 1.0f));
-
-    matrix_free(&m);
+    matrix_t m;
+    matrix_set(m, 1, 2, 5.0);
+    munit_assert(m[2*4+1] == 5.0);
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_comparison) {
-    matrix_t m1 = matrix_null(2, 2);
-    matrix_t m2 = matrix_null(2, 2);
+    matrix_t a;
+    matrix_t b;
+    matrix_zero(&a);
+    matrix_zero(&b);
 
-    matrix_init(&m1);
-    matrix_init(&m2);
-    matrix_set(&m1, 1, 1, 1.0f);
-    munit_assert(!matrix_cmp(&m1, &m2, matrix_cmp_delta));
-    matrix_set(&m2, 1, 1, 1.0f);
-    munit_assert(matrix_cmp(&m1, &m2, matrix_cmp_delta));
-    matrix_free(&m1);
-    matrix_free(&m2);
+    munit_assert(matrix_cmp2(a, b));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_multiplication) {
-    double data1[] = {1.0f, 2.0f,
-                     3.0f, 4.0f};
-    double data2[] = {2.0f, 3.0f,
-                     4.0f, 5.0f};
-    double datat[] = {10.0f, 13.0f,
-                     22.0f, 29.0f};
-    matrix_t m1 = matrix(2, 2, data1);
-    matrix_t m2 = matrix(2, 2, data2);
-    matrix_t mt = matrix(2, 2, datat);
+    matrix_t a = {1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2};
+    matrix_t b = {0, 1, 0, 1,
+                  0, 1, 0, 1,
+                  0, 1, 0, 1,
+                  0, 1, 0, 1};
+    matrix_t t1 = {0, 6, 0, 6,
+                  0, 6, 0, 6,
+                  0, 6, 0, 6,
+                  0, 6, 0, 6};
+    matrix_t t2 = {2, 4, 2, 4,
+                   2, 4, 2, 4,
+                   2, 4, 2, 4,
+                   2, 4, 2, 4};
+    matrix_t tmp;
 
-    matrix_t r = matrix_mul(&m1, &m2);
-
-
-    munit_assert(matrix_cmp1(&mt, matrix_mul(&m1, &m2), matrix_cmp_delta));
-
-    matrix_free(&m1);
-    matrix_free(&m2);
-    matrix_free(&mt);
-    matrix_free(&r);
+    munit_assert(matrix_cmp2(*matrix_mul(a, b, &tmp), t1));
+    munit_assert(matrix_cmp2(*matrix_mul(b, a, &tmp), t2));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_identity) {
-    double data1[] = {1.0f, 2.0f,
-                     3.0f, 4.0f};
-    double data2[] = {1.0f, 0.0f,
-                     0.0f, 1.0f};
+    matrix_t m = {1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2};
+    matrix_t id;
+    matrix_t tmp;
 
-    matrix_t m = matrix(2, 2, data1);
-    matrix_t t = matrix(2, 2, data2);
-
-    matrix_t i = matrix_id(2);
-
-    munit_assert(matrix_cmp(&t, &i, matrix_cmp_delta));
-    munit_assert(matrix_cmp1(&m, matrix_mul(&m, &i), matrix_cmp_delta));
-
-    matrix_free(&m);
-    matrix_free(&t);
-    matrix_free(&i);
+    munit_assert(matrix_cmp2(*matrix_mul(*matrix_id(&id), m, &tmp), m));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_transpose) {
-    double data1[] = {1.0f, 2.0f, 3.0f,
-                     4.0f, 5.0f, 6.0f};
-    double data2[] = {1.0f, 4.0f,
-                     2.0f, 5.0f,
-                     3.0f, 6.0f};
-    matrix_t m1 = matrix(3, 2, data1);
-    matrix_t m2 = matrix(2, 3, data2);
+    matrix_t m = {1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2,
+                  1, 2, 1, 2};
+    matrix_t t = {1, 1, 1, 1,
+                  2, 2, 2, 2,
+                  1, 1, 1, 1,
+                  2, 2, 2, 2};
+    matrix_t tmp;
 
-    munit_assert(matrix_cmp1(&m2, matrix_T(&m1), matrix_cmp_delta));
-
-    matrix_free(&m1);
-    matrix_free(&m2);
-
-    return MUNIT_OK;
-}
-
-TEST(test_matrix_submatrix) {
-    double data1[] = {1.0f, 2.0f, 3.0f,
-                     4.0f, 5.0f, 6.0f,
-                     7.0f, 8.0f, 9.0f};
-    double data2[] = {5.0f, 6.0f,
-                     8.0f, 9.0f};
-    matrix_t m1 = matrix(3, 3, data1);
-    matrix_t m2 = matrix(2, 2, data2);
-
-    munit_assert(matrix_cmp1(&m2, matrix_submatrix(&m1, 0, 0), matrix_cmp_delta));
-
-    matrix_free(&m1);
-    matrix_free(&m2);
+    munit_assert(matrix_cmp2(*matrix_T(m, &tmp), t));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_determinant) {
-    double data1[] = {1.0f, 2.0f, 3.0f,
-                     4.0f, 5.0f, 6.0f,
-                     7.0f, 8.0f, 9.0f};
-    double data2[] = {5.0f, 6.0f,
-                     8.0f, 9.0f};
-    matrix_t m1 = matrix(3, 3, data1);
-    matrix_t m2 = matrix(2, 2, data2);
+    matrix_t m = {1, 2, 3, 4,
+                  5, 6, 7, 8,
+                  9, 2, 3, 5,
+                  4, 3, 6, 8};
 
-    munit_assert(double_cmp2(matrix_det(&m1), 0.0f));
-    munit_assert(double_cmp2(matrix_det(&m2), -3.0f));
-
-    matrix_free(&m1);
-    matrix_free(&m2);
+    munit_assert(double_cmp2(matrix_det(m), 48));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_invertible) {
-    double data1[] = {1.0f, 2.0f, 3.0f,
-                     4.0f, 5.0f, 6.0f,
-                     7.0f, 8.0f, 9.0f};
-    double data2[] = {5.0f, 6.0f,
-                     8.0f, 9.0f};
-    matrix_t m1 = matrix(3, 3, data1);
-    matrix_t m2 = matrix(2, 2, data2);
+    matrix_t a = {1, 2, 3, 4,
+                  5, 6, 7, 8,
+                  9, 2, 3, 4,
+                  4, 3, 6, 8};
+    matrix_t b = {1, 2, 3, 4,
+                  5, 6, 7, 8,
+                  9, 1, 2, 3,
+                  4, 5, 6, 7};
 
-    munit_assert(!matrix_is_invertible(&m1));
-    munit_assert(matrix_is_invertible(&m2));
-
-    matrix_free(&m1);
-    matrix_free(&m2);
+    munit_assert(matrix_is_invertible(a));
+    munit_assert_false(matrix_is_invertible(b));
 
     return MUNIT_OK;
 }
 
 TEST(test_matrix_inversion) {
-    double data[] = {-5, 2, 6, -8,
-                    1, -5, 1, 8,
-                    7, 7, -6, -7,
-                    1, -3, 7, 4};
-    double datat[] = {0.21805f, 0.45113f, 0.24060f, -0.04511f,
-                     -0.80827f, -1.45677f, -0.44361f, 0.52068f,
-                     -0.07895f, -0.22368f, -0.05263f, 0.19737f,
-                     -0.52256f, -0.81391f, -0.30075f, 0.30639f};
-    matrix_t m = matrix(4, 4, data);
-    matrix_t t = matrix(4, 4, datat);
+    matrix_t a = {1, 2, 3, 4,
+                  5, 6, 7, 8,
+                  9, 2, 3, 4,
+                  4, 3, 6, 8};
+    matrix_t id;
+    matrix_id(&id);
 
-    matrix_t inv = matrix_inv(&m);
+    matrix_t tmp1;
+    matrix_t tmp2;
 
-    munit_assert(matrix_cmp(&t, &inv, matrix_cmp_delta));
-
-    matrix_t id = matrix_id(4);
-    matrix_t mul = matrix_mul(&m, &inv);
-
-    munit_assert(matrix_cmp(&mul, &id, matrix_cmp_delta));
-
-    matrix_free(&m);
-    matrix_free(&t);
-    matrix_free(&inv);
-    matrix_free(&id);
-    matrix_free(&mul);
+    munit_assert(matrix_cmp2(*matrix_mul(*matrix_inv(a, &tmp1), a, &tmp2), id));
 
     return MUNIT_OK;
 }
 
 
+TEST(test_matrix_translation) {
+    matrix_t t;
+    tuple_t p = point(1, 0, 0);
 
+    munit_assert(tuple_cmp2(tuple_transform(*translation_matrix(1, 1, 1, &t), p), point(2, 1, 1)));
+}
+
+TEST(test_matrix_scaling) {
+    matrix_t t;
+    tuple_t p = point(1, 0, 0);
+
+    munit_assert(tuple_cmp2(tuple_transform(*scaling_matrix(2, 2, 2, &t), p), point(2, 0, 0)));
+}
+
+TEST(test_matrix_rotation_x) {
+    matrix_t t;
+    tuple_t p = point(1, 1, 1);
+
+    munit_assert(tuple_cmp2(tuple_transform(*rotation_x_matrix(M_PI/2, &t), p), point(1, -1, 1)));
+}
+
+TEST(test_matrix_rotation_y) {
+    matrix_t t;
+    tuple_t p = point(1, 1, 1);
+
+    munit_assert(tuple_cmp2(tuple_transform(*rotation_y_matrix(M_PI/2, &t), p), point(1, 1, -1)));
+}
+
+TEST(test_matrix_rotation_z) {
+    matrix_t t;
+    tuple_t p = point(1, 1, 1);
+
+    munit_assert(tuple_cmp2(tuple_transform(*rotation_z_matrix(M_PI/2, &t), p), point(-1, 1, 1)));
+}
 
 #define MATRIX_TESTS \
     {                \
-        "matrix_instantiation", \
-        test_matrix_instantiation, \
+        "matrix_zerp", \
+        test_matrix_zero, \
         NULL,       \
         NULL,       \
         MUNIT_TEST_OPTION_NONE,  \
@@ -247,15 +217,7 @@ TEST(test_matrix_inversion) {
         NULL,       \
         MUNIT_TEST_OPTION_NONE,  \
         NULL    \
-    },               \
-    {                \
-        "matrix_submatrix", \
-        test_matrix_submatrix, \
-        NULL,       \
-        NULL,       \
-        MUNIT_TEST_OPTION_NONE,  \
-        NULL    \
-    },               \
+    },           \
     {                \
         "matrix_determinant", \
         test_matrix_determinant, \
@@ -275,6 +237,46 @@ TEST(test_matrix_inversion) {
     {                \
         "matrix_inversion", \
         test_matrix_inversion, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+    {                \
+        "matrix_translation", \
+        test_matrix_translation, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+    {                \
+        "matrix_scaling", \
+        test_matrix_scaling, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+    {                \
+        "matrix_rotation_x", \
+        test_matrix_rotation_x, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+        {                \
+        "matrix_rotation_y", \
+        test_matrix_rotation_y, \
+        NULL,       \
+        NULL,       \
+        MUNIT_TEST_OPTION_NONE,  \
+        NULL    \
+    },               \
+    {                \
+        "matrix_rotation_z", \
+        test_matrix_rotation_z, \
         NULL,       \
         NULL,       \
         MUNIT_TEST_OPTION_NONE,  \

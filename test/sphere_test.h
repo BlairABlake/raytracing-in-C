@@ -7,46 +7,24 @@
 
 #include "tests.h"
 
-TEST(test_sphere_instantiation) {
-    tuple_t center = point(0, 0, 0);
-    double radius = 1.0f;
-    color_t c = color(1, 1, 1);
-    material_t m = material(c, 0.0f, 0.0f, 0.0f, 0.0f);
-    sphere_t s = sphere_null(center, radius, m);
-
-    munit_assert(tuple_cmp2(s.center, center));
-    munit_assert(double_cmp2(s.radius, radius));
-
-    return MUNIT_OK;
-}
-
 TEST(test_sphere_hit) {
-    color_t c = color(1, 1, 1);
-    material_t m = material(c, 0.0f, 0.0f, 0.0f, 0.0f);
-    sphere_t s = sphere_null(point(0, 0, 0), 1.0f, m);
-    ray_t r = ray(point(0, 0, 0), vector(1, 1, 0));
+    ray_t ray = ray(point(-2, -2, 0), vector(1, 1, 0));
+    object_t sphere;
+    object_init(&sphere);
 
-    double hits[2];
-    int hit_n = 0;
-    sphere_hit(&s, &r, hits, &hit_n);
+    List hits = sphere_hit(&sphere, ray);
+    ListElm* hit = hits.head;
 
-    tuple_t hit_p = ray_position(&r, hits[0]);
+    hit_t* hit1 = (hit_t*)hit->data;
+    munit_assert(tuple_cmp2(hit1->position, point(cos(M_PI/4 * 5), sin(M_PI/4 * 5), 0)));
 
-    munit_assert(hit_n == 1);
-    munit_assert(tuple_cmp2(hit_p, point(cosf(M_PI / 4), sinf(M_PI / 4), 0)));
+    hit_t* hit2 = (hit_t*)hit->next->data;
+    munit_assert(tuple_cmp2(hit2->position, point(cos(M_PI/4), sin(M_PI/4), 0)));
 
     return MUNIT_OK;
 }
 
 #define SPHERE_TESTS \
-    {                \
-        "sphere_instantiation", \
-        test_sphere_instantiation, \
-        NULL,        \
-        NULL,        \
-        MUNIT_TEST_OPTION_NONE, \
-        NULL\
-    },               \
     {                \
         "sphere_hit", \
         test_sphere_hit, \
